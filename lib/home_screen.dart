@@ -1,5 +1,5 @@
-// lib/home_screen.dart
 import 'package:flutter/material.dart';
+import 'service_provider_page.dart'; // New service provider page
 import 'booking_page.dart'; // Ensure this import is present
 
 class HomeScreen extends StatefulWidget {
@@ -52,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     final booking = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            BookingPage(serviceName: services[index]['name']!),
+                        builder: (context) => ServiceProviderPage(
+                            serviceName: services[index]['name']!),
                       ),
                     );
 

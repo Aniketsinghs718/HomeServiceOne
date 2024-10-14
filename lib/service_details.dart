@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
-import 'booking_page.dart'; // Ensure this import is correct
-import 'models/service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ServiceDetails extends StatelessWidget {
-  final Service service;
+class ServiceDetailsPage extends StatelessWidget {
+  final String serviceName;
 
-  ServiceDetails({required this.service});
+  ServiceDetailsPage({required this.serviceName});
+
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunch(launchUri.toString())) {
+      await launch(launchUri.toString());
+    } else {
+      throw 'Could not launch $launchUri';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(service.name)),
+      appBar: AppBar(
+        title: Text('$serviceName Details'),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(service.icon, size: 100),
+            Text(
+              'Details about the $serviceName service.',
+              style: TextStyle(fontSize: 18),
+            ),
             SizedBox(height: 20),
-            Text(service.name,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10),
-            Text('Description of ${service.name} services.'),
-            Spacer(),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BookingPage(
-                          serviceName: service.name)), // Pass the service name
-                );
-              },
-              child: Text('Book Now'),
+              onPressed: () =>
+                  _makePhoneCall('1234567890'), // Replace with actual number
+              child: Text('Call Service Provider'),
             ),
           ],
         ),

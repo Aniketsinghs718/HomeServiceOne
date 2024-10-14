@@ -1,6 +1,5 @@
-// lib/booking_page.dart
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // For date formatting
+import 'package:intl/intl.dart';
 
 class BookingPage extends StatefulWidget {
   final String serviceName;
@@ -27,7 +26,7 @@ class _BookingPageState extends State<BookingPage> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
-    if (picked != null && picked != _selectedDate) {
+    if (picked != null) {
       setState(() {
         _selectedDate = picked;
         _dateController.text = DateFormat('yyyy-MM-dd').format(_selectedDate!);
@@ -40,7 +39,7 @@ class _BookingPageState extends State<BookingPage> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (picked != null && picked != _selectedTime) {
+    if (picked != null) {
       setState(() {
         _selectedTime = picked;
         _timeController.text = _selectedTime!.format(context);
@@ -56,7 +55,7 @@ class _BookingPageState extends State<BookingPage> {
         'time': _timeController.text,
         'address': _addressController.text,
       };
-      Navigator.pop(context, booking);
+      Navigator.pop(context, booking); // Return booking info to HomeScreen
     }
   }
 
@@ -71,54 +70,30 @@ class _BookingPageState extends State<BookingPage> {
         child: Form(
           key: _formKey,
           child: ListView(
-            children: <Widget>[
+            children: [
               TextFormField(
                 controller: _dateController,
-                decoration: InputDecoration(
-                  labelText: "Select Date",
-                  prefixIcon: Icon(Icons.calendar_today),
-                  border: OutlineInputBorder(),
-                ),
+                decoration: InputDecoration(labelText: "Select Date"),
                 readOnly: true,
                 onTap: () => _selectDate(context),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a date';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    value!.isEmpty ? 'Please select a date' : null,
               ),
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _timeController,
-                decoration: InputDecoration(
-                  labelText: "Select Time",
-                  prefixIcon: Icon(Icons.access_time),
-                  border: OutlineInputBorder(),
-                ),
+                decoration: InputDecoration(labelText: "Select Time"),
                 readOnly: true,
                 onTap: () => _selectTime(context),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a time';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    value!.isEmpty ? 'Please select a time' : null,
               ),
               SizedBox(height: 16.0),
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(
-                  labelText: "Enter Address",
-                  prefixIcon: Icon(Icons.location_on),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your address';
-                  }
-                  return null;
-                },
+                decoration: InputDecoration(labelText: "Enter Address"),
+                validator: (value) =>
+                    value!.isEmpty ? 'Please enter your address' : null,
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
